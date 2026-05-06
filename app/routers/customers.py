@@ -19,15 +19,30 @@ def list_customers(db: Session = Depends(get_db)) -> list[Customer]:
 
 @router.post("", response_model=CustomerOut, status_code=201)
 def create_customer(body: CustomerCreate, db: Session = Depends(get_db)) -> Customer:
+    """Crea o actualiza por email (registro web / sincronización de perfil)."""
     email = body.email.strip()
+    name = body.name.strip()
+    shipping_address = body.shipping_address.strip()
+    phone_number = body.phone_number.strip()[:32]
+
     existing = db.scalar(select(Customer).where(Customer.email == email))
     if existing is not None:
-        raise HTTPException(status_code=409, detail="Customer with this email already exists")
+        existing.name = name
+        existing.shipping_address = shipping_address
+        existing.phone_number = phone_number
+        try:
+            db.commit()
+        except IntegrityError:
+            db.rollback()
+            raise HTTPException(status_code=409, detail="Could not update customer") from None
+        db.refresh(existing)
+        return existing
 
     customer = Customer(
         email=email,
-        name=body.name.strip(),
-        shipping_address=body.shipping_address.strip(),
+        name=name,
+        shipping_address=shipping_address,
+        phone_number=phone_number,
     )
     db.add(customer)
     try:

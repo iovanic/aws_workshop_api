@@ -44,7 +44,7 @@ curl -fsS -X POST "$API_BASE/products" \
     "name": "Drone de prueba",
     "tagline": "Solo taller",
     "description": "Producto ficticio para comprobar POST.",
-    "price": 9999,
+    "price": 99.99,
     "images": ["/images/test/1.png"]
   }'
 ```
