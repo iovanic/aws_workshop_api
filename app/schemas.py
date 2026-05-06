@@ -1,7 +1,8 @@
 from datetime import datetime
+from decimal import Decimal
 from uuid import UUID
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, field_validator
 
 
 class ProductOut(BaseModel):
@@ -11,8 +12,15 @@ class ProductOut(BaseModel):
     name: str
     tagline: str
     description: str
-    price: int
+    price: float
     images: list[str]
+
+    @field_validator("price", mode="before")
+    @classmethod
+    def _price_to_float(cls, v: object) -> float:
+        if isinstance(v, Decimal):
+            return float(v)
+        return float(v)  # type: ignore[arg-type]
 
 
 class CustomerOut(BaseModel):
@@ -22,6 +30,7 @@ class CustomerOut(BaseModel):
     email: str
     name: str
     shipping_address: str
+    phone_number: str
 
 
 class OrderItemOut(BaseModel):
@@ -29,7 +38,14 @@ class OrderItemOut(BaseModel):
 
     product_id: str
     quantity: int
-    unit_price: int
+    unit_price: float
+
+    @field_validator("unit_price", mode="before")
+    @classmethod
+    def _unit_price_to_float(cls, v: object) -> float:
+        if isinstance(v, Decimal):
+            return float(v)
+        return float(v)  # type: ignore[arg-type]
 
 
 class OrderOut(BaseModel):
@@ -47,9 +63,9 @@ class OrderItemCreate(BaseModel):
 
 
 class OrderCreate(BaseModel):
+    """Solo email + líneas: el cliente debe existir en RDS (creado al registrarse)."""
+
     customer_email: str = Field(..., min_length=3, max_length=320)
-    customer_name: str = ""
-    shipping_address: str = ""
     items: list[OrderItemCreate] = Field(..., min_length=1)
 
 
@@ -58,11 +74,17 @@ class ProductCreate(BaseModel):
     name: str = Field(..., min_length=1, max_length=255)
     tagline: str = ""
     description: str = ""
-    price: int = Field(..., ge=0)
+    price: Decimal = Field(..., ge=Decimal("0"), max_digits=12, decimal_places=2)
     images: list[str] = Field(default_factory=list)
+
+    @field_validator("price", mode="after")
+    @classmethod
+    def _quantize_price(cls, v: Decimal) -> Decimal:
+        return v.quantize(Decimal("0.01"))
 
 
 class CustomerCreate(BaseModel):
     email: str = Field(..., min_length=3, max_length=320)
     name: str = ""
     shipping_address: str = ""
+    phone_number: str = ""

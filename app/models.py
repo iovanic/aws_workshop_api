@@ -2,8 +2,9 @@ from __future__ import annotations
 
 import uuid
 from datetime import datetime
+from decimal import Decimal
 
-from sqlalchemy import JSON, DateTime, ForeignKey, Integer, String, func
+from sqlalchemy import JSON, DateTime, ForeignKey, Integer, Numeric, String, func
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.database import Base
@@ -16,6 +17,7 @@ class Customer(Base):
     email: Mapped[str] = mapped_column(String(320), nullable=False, unique=True, index=True)
     name: Mapped[str] = mapped_column(String(255), default="")
     shipping_address: Mapped[str] = mapped_column(String(1024), default="")
+    phone_number: Mapped[str] = mapped_column(String(32), default="")
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now()
     )
@@ -30,7 +32,7 @@ class Product(Base):
     name: Mapped[str] = mapped_column(String(255), nullable=False)
     tagline: Mapped[str] = mapped_column(String(512), default="")
     description: Mapped[str] = mapped_column(String(4096), default="")
-    price: Mapped[int] = mapped_column(Integer, nullable=False)
+    price: Mapped[Decimal] = mapped_column(Numeric(12, 2), nullable=False)
     images: Mapped[list[str]] = mapped_column(JSON, nullable=False)
 
     order_items: Mapped[list["OrderItem"]] = relationship(
@@ -72,7 +74,7 @@ class OrderItem(Base):
         nullable=False,
     )
     quantity: Mapped[int] = mapped_column(Integer, nullable=False)
-    unit_price: Mapped[int] = mapped_column(Integer, nullable=False)
+    unit_price: Mapped[Decimal] = mapped_column(Numeric(12, 2), nullable=False)
 
     order: Mapped[Order] = relationship("Order", back_populates="items")
     product: Mapped[Product] = relationship("Product", back_populates="order_items")

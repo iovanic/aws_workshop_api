@@ -29,16 +29,10 @@ def create_order(body: OrderCreate, db: Session = Depends(get_db)) -> Order:
     email = body.customer_email.strip()
     customer = db.scalar(select(Customer).where(Customer.email == email))
     if customer is None:
-        customer = Customer(
-            email=email,
-            name=body.customer_name.strip(),
-            shipping_address=body.shipping_address.strip(),
+        raise HTTPException(
+            status_code=404,
+            detail="Customer not found. Register in the shop or sync your profile first.",
         )
-        db.add(customer)
-        db.flush()
-    else:
-        customer.name = body.customer_name.strip()
-        customer.shipping_address = body.shipping_address.strip()
 
     order = Order(customer_id=customer.id)
 

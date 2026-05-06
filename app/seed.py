@@ -23,7 +23,7 @@ DRONES_SEED = [
             "quienes quieren un primer toque pro sin miedo a aprender a pilotar en "
             "serio (con advertencias legales de siempre, claro)."
         ),
-        "price": 32900,
+        "price": 329.00,
         "images": [
             "/images/sky_hawk_x1/sky_hawk_x1_1.png",
             "/images/sky_hawk_x1/sky_hawk_x1_2.png",
@@ -39,7 +39,7 @@ DRONES_SEED = [
             "No vuela solo de verdad: tú pones las reglas y el mapa, nosotros el "
             "estilo y la ficción."
         ),
-        "price": 49900,
+        "price": 499.00,
         "images": [
             "/images/night_viper_3000/night_viper_3000_1.png",
             "/images/night_viper_3000/night_viper_3000_2.png",
@@ -55,7 +55,7 @@ DRONES_SEED = [
             "gatos confundidos. Batería intercambiable; pack de 3 baterías se vende "
             "aparte (en nuestra cabeza, al menos)."
         ),
-        "price": 18900,
+        "price": 189.00,
         "images": [
             "/images/cloud_hopper_nano/cloud_hopper_nano_1.png",
             "/images/cloud_hopper_nano/cloud_hopper_nano_2.png",
@@ -71,7 +71,7 @@ DRONES_SEED = [
             "gimbal de 3 ejes. La lluvia real sigue estando mojada: consulta clima y "
             "normativa local."
         ),
-        "price": 62900,
+        "price": 629.00,
         "images": [
             "/images/storm_copter_alpha/storm_copter_alpha_1.png",
             "/images/storm_copter_alpha/storm_copter_alpha_2.png",
@@ -86,7 +86,7 @@ DRONES_SEED = [
             "de aterrizaje retraíbles, GPS simulado y perfiles de vuelo para "
             "creadores. Si buscas cine: aquí te damos cine, drones y puro invento."
         ),
-        "price": 74900,
+        "price": 749.00,
         "images": [
             "/images/aether_hexa/aether_hexa_1.png",
             "/images/aether_hexa/aether_hexa_2.png",
@@ -102,7 +102,7 @@ DRONES_SEED = [
             "compatibles. El nombre suena a ciencia; el producto, a puro módelo "
             "Next Drones Shop."
         ),
-        "price": 42900,
+        "price": 429.00,
         "images": [
             "/images/quantum_orb/quantum_orb_1.png",
             "/images/quantum_orb/quantum_orb_2.png",

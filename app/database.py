@@ -29,7 +29,13 @@ def get_db() -> Generator[Session, None, None]:
 def init_db() -> None:
     # Imported here to avoid circular imports (models register tables on Base).
     from app import models  # noqa: F401
-    from app.db_upgrade import ensure_orders_use_customers
+    from app.db_upgrade import (
+        ensure_customer_phone_column,
+        ensure_orders_use_customers,
+        ensure_product_prices_decimal,
+    )
 
     Base.metadata.create_all(bind=engine)
     ensure_orders_use_customers()
+    ensure_customer_phone_column()
+    ensure_product_prices_decimal()
